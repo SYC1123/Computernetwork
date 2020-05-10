@@ -136,7 +136,7 @@ class crc16:
 
 
 test = crc16()
-array = ['你好']
+array = [213]
 print(test.createcrc(array))
 array1 = test.createarray(array)
 print(array1)
