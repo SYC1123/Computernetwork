@@ -15,7 +15,7 @@ if __name__ == '__main__':
     user_input = input().strip()
     tcpCliSock.settimeout(0.3)
     while user_input != 'quit':
-        if reSendFlag==0:
+        if reSendFlag == 0:
             user_input = str(Flag) + ':' + user_input
         reSendFlag = False
         try:
@@ -31,7 +31,7 @@ if __name__ == '__main__':
                 Flag = returnData
         except timeout:
             print("发生了超时")
-            reSendFlag=True
+            reSendFlag = True
         finally:
             if reSendFlag != 1:
                 user_input = input().strip()
