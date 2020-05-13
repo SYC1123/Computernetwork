@@ -22,7 +22,7 @@ def cmp(oldlist, newlist):
 
 
 def init():
-    r1 = RIP('N1', 2, 'B')
+    r1 = RIP('N1', 16, 'B')
     A_table.append(r1)
 
 
@@ -37,14 +37,13 @@ if __name__ == '__main__':
     tcpCliSock.settimeout(0.1)
     flag = False
     while True:
-        RIP.changenext(A_table, 'A')
-        data_string = pickle.dumps(A_table)
-        tcpCliSock.send(data_string)  # 发送消息
         try:
+            tcpCliSock.send('timeout'.encode('utf-8'))  # 发送消息
             data = tcpCliSock.recv(BUFSIZ)  # 读取消息
-            break
+            # break
         except timeout:
             tcpCliSock.settimeout(0.3)
             A_table[0].distance = 16
             print("3分钟还没有收到相邻路由器的更新路由表")
+            break
     tcpCliSock.close()  # 关闭客户端

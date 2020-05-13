@@ -6,7 +6,8 @@ class RIP:
         self.result = '无更新'
 
     def adddistance(self):
-        self.distance += 1
+        if self.distance!=16:
+            self.distance += 1
 
     def output(self, flag):
         if flag == 0:
@@ -16,6 +17,7 @@ class RIP:
 
     @staticmethod
     def updatetable(B_table, C_table):
+        k = 0
         for i in range(len(C_table)):
             flag = True
             for j in range(len(B_table)):
@@ -25,16 +27,22 @@ class RIP:
                     if C_table[i].next == B_table[j].next:
                         # print("同目的，同下一跳，直接更新")
                         B_table[j].distance = C_table[i].distance
+                        if B_table[j].distance==16:
+                            k=1
                         B_table[j].result = "同目的，同下一跳，直接更新"
                     # 同目的，不同下一跳
                     else:
                         if C_table[i].distance < B_table[j].distance:
                             # print('同目的，不同下一跳，选距离短的')
                             B_table[j].distance = C_table[i].distance
+                            if B_table[j].distance == 16:
+                                k = 1
                             B_table[j].next = C_table[i].next
                             B_table[j].result = '同目的，不同下一跳，选距离短的'
                         elif C_table[i].distance == B_table[j].distance:
                             # print('同目的，不同下一跳，距离相同，不变')
+                            if B_table[j].distance == 16:
+                                k = 1
                             B_table[j].result = '同目的，不同下一跳，距离相同，不变'
                         else:
                             # print('同目的，不同下一跳，来的距离长，不变')
@@ -45,6 +53,7 @@ class RIP:
                 # print('新项，直接添加')
                 C_table[i].result = '新项，直接添加'
                 B_table.append(C_table[i])
+        return k
 
     @staticmethod
     def addvalue(List):

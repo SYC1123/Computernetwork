@@ -32,14 +32,20 @@ def receive(conn, addr):
         try:
             time.sleep(0.2)
             data = conn.recv(BUFSIZ)  # 读取已链接客户的发送的消息
-            getList = pickle.loads(data)
+            getList = None
+            try:
+                if data.decode(COD) == 'timeout':
+                    B_table.clear()
+                    rx=RIP('N1', 16, 'A')
+                    B_table.append(rx)
+                    for i in B_table:
+                        i.output(0)
+            except:
+                getList = pickle.loads(data)
             print('收到的RIP报文')
             print('---------------------------------')
             for item in getList:
                 item.output(0)
-            if len(getList) == 1:
-                B_table = copy.deepcopy(getList)
-                B_table[0].output(0)
             oldlist = copy.deepcopy(B_table)
             RIP.updatetable(B_table, getList)
             if cmp(oldlist, B_table):
